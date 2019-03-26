@@ -1,0 +1,49 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Configuration
+metadata:
+  name: config-demo-blue
+  namespace: default
+spec:
+  revisionTemplate:
+    metadata:
+      labels:
+        knative.dev/type: container
+    spec:
+      container:
+        image: gcr.io/knative-samples/knative-route-demo:blue # The URL to the sample app docker image
+        imagePullPolicy: Always
+        env:
+          - name: T_VERSION
+            value: "blue"
+---
+apiVersion: serving.knative.dev/v1alpha1
+kind: Configuration
+metadata:
+  name: config-demo-green
+  namespace: default
+spec:
+  revisionTemplate:
+    metadata:
+      labels:
+        knative.dev/type: container
+    spec:
+      container:
+        image: gcr.io/knative-samples/knative-route-demo:green # The URL to the sample app docker image
+        imagePullPolicy: Always
+        env:
+          - name: T_VERSION
+            value: "green"
+---
+apiVersion: serving.knative.dev/v1alpha1
+kind: Route
+metadata:
+  name: route-blue-green
+  namespace: default
+spec:
+  traffic:
+    - configurationName: config-demo-blue
+      name: v1
+      percent: 50
+    - configurationName: config-demo-green
+      name: v2
+      percent: 50
