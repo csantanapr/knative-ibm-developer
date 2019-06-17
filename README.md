@@ -55,7 +55,7 @@ Open the App in a Browser or use `curl` usign URL from previous step
 ## Deploy Java App
 Build the container image
 ```bash
-pushd nodejs
+pushd java
 docker build . -t {username}/quarkus
 docker push {username}/quarkus
 popd
